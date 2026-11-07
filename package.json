@@ -1,0 +1,29 @@
+{
+  "name": "fixturelabs-videos",
+  "private": true,
+  "description": "FixtureLabs product videos, rendered with Remotion.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render src/index.ts LugNut out/lug-nut.mp4",
+    "still": "remotion still src/index.ts"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.3.0",
+    "@react-three/postprocessing": "^3.0.4",
+    "@remotion/cli": "^4.0.360",
+    "@remotion/google-fonts": "^4.0.539",
+    "@remotion/three": "^4.0.360",
+    "postprocessing": "^6.37.8",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "remotion": "^4.0.360",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.180.0",
+    "typescript": "^5"
+  }
+}
