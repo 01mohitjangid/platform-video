@@ -1,0 +1,84 @@
+# platform-video
+
+FixtureLabs story videos, built with Remotion.
+
+```
+.gitignore
+concepts/
+  fixtureai-bots.html
+  fixtureai-characters.html
+package-lock.json
+package.json
+public/
+  audio/
+    ask/
+      levels.json
+      manifest.json
+    contest/
+      levels.json
+      manifest.json
+    dfm/
+      levels.json
+      manifest.json
+    hours/
+      levels.json
+      manifest.json
+    interview/
+      levels.json
+      manifest.json
+    lug-nut/
+      levels.json
+      manifest.json
+  brand/
+    fixturelabs-white.png
+    fixturelabs-wordmark-teal.png
+    fixturelabs.svg
+remotion.config.ts
+src/
+  Episode.tsx
+  Root.tsx
+  episodes.ts
+  index.ts
+  overlay/
+    Subtitle.tsx
+  scene/
+    Bot.tsx
+    Memora.tsx
+    Person.tsx
+    Post.tsx
+    Room.tsx
+    Scene.tsx
+    camera.ts
+    dev-entry.tsx
+    face.ts
+    motion.ts
+  scripts/
+    ask.ts
+    contest.ts
+    dfm.ts
+    hours.ts
+    interview.ts
+    lug-nut.ts
+  timeline.ts
+  types.ts
+  ui/
+    Insert.tsx
+    dev-entry.tsx
+    lib.tsx
+    scenes/
+      Ask.tsx
+      Challenge.tsx
+      Contest.tsx
+      Dfm.tsx
+      Endcard.tsx
+      Feedback.tsx
+      Hours.tsx
+      Interview.tsx
+      Passed.tsx
+      Title.tsx
+tools/
+  audio.py
+  qa-stills.sh
+  sheet.sh
+tsconfig.json
+```
