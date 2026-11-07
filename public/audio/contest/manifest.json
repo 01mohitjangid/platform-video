@@ -1,0 +1,94 @@
+{
+  "lines": {
+    "p1": {
+      "file": "audio/contest/lines/p1.wav",
+      "duration": 4.019
+    },
+    "p2": {
+      "file": "audio/contest/lines/p2.wav",
+      "duration": 3.046
+    },
+    "b1": {
+      "file": "audio/contest/lines/b1.wav",
+      "duration": 4.721
+    },
+    "p3": {
+      "file": "audio/contest/lines/p3.wav",
+      "duration": 2.555
+    },
+    "b2": {
+      "file": "audio/contest/lines/b2.wav",
+      "duration": 4.096
+    },
+    "p4": {
+      "file": "audio/contest/lines/p4.wav",
+      "duration": 1.228
+    },
+    "p5": {
+      "file": "audio/contest/lines/p5.wav",
+      "duration": 5.859
+    },
+    "b3": {
+      "file": "audio/contest/lines/b3.wav",
+      "duration": 3.246
+    },
+    "b4": {
+      "file": "audio/contest/lines/b4.wav",
+      "duration": 3.555
+    },
+    "p6": {
+      "file": "audio/contest/lines/p6.wav",
+      "duration": 2.18
+    },
+    "b5": {
+      "file": "audio/contest/lines/b5.wav",
+      "duration": 4.212
+    },
+    "p7": {
+      "file": "audio/contest/lines/p7.wav",
+      "duration": 3.488
+    },
+    "b6": {
+      "file": "audio/contest/lines/b6.wav",
+      "duration": 5.772
+    },
+    "p8": {
+      "file": "audio/contest/lines/p8.wav",
+      "duration": 2.085
+    },
+    "b7": {
+      "file": "audio/contest/lines/b7.wav",
+      "duration": 2.102
+    },
+    "b8": {
+      "file": "audio/contest/lines/b8.wav",
+      "duration": 3.034
+    }
+  },
+  "music": {
+    "file": "audio/music.wav",
+    "duration": 132.0
+  },
+  "sfx": {
+    "pop": {
+      "file": "audio/sfx/pop.wav",
+      "duration": 0.3
+    },
+    "whoosh": {
+      "file": "audio/sfx/whoosh.wav",
+      "duration": 0.55
+    },
+    "click": {
+      "file": "audio/sfx/click.wav",
+      "duration": 0.04
+    },
+    "chime": {
+      "file": "audio/sfx/chime.wav",
+      "duration": 0.7
+    },
+    "sting": {
+      "file": "audio/sfx/sting.wav",
+      "duration": 2.0
+    }
+  }
+}
