@@ -1,0 +1,98 @@
+{
+  "lines": {
+    "p1": {
+      "file": "audio/hours/lines/p1.wav",
+      "duration": 4.965
+    },
+    "b1": {
+      "file": "audio/hours/lines/b1.wav",
+      "duration": 3.274
+    },
+    "p2": {
+      "file": "audio/hours/lines/p2.wav",
+      "duration": 6.365
+    },
+    "b2": {
+      "file": "audio/hours/lines/b2.wav",
+      "duration": 1.271
+    },
+    "p3": {
+      "file": "audio/hours/lines/p3.wav",
+      "duration": 4.668
+    },
+    "b3": {
+      "file": "audio/hours/lines/b3.wav",
+      "duration": 3.556
+    },
+    "p4": {
+      "file": "audio/hours/lines/p4.wav",
+      "duration": 1.604
+    },
+    "b4": {
+      "file": "audio/hours/lines/b4.wav",
+      "duration": 2.547
+    },
+    "b5": {
+      "file": "audio/hours/lines/b5.wav",
+      "duration": 4.227
+    },
+    "p5": {
+      "file": "audio/hours/lines/p5.wav",
+      "duration": 1.273
+    },
+    "b6": {
+      "file": "audio/hours/lines/b6.wav",
+      "duration": 3.777
+    },
+    "p6": {
+      "file": "audio/hours/lines/p6.wav",
+      "duration": 1.441
+    },
+    "p7": {
+      "file": "audio/hours/lines/p7.wav",
+      "duration": 3.856
+    },
+    "b7": {
+      "file": "audio/hours/lines/b7.wav",
+      "duration": 3.092
+    },
+    "p8": {
+      "file": "audio/hours/lines/p8.wav",
+      "duration": 1.887
+    },
+    "b8": {
+      "file": "audio/hours/lines/b8.wav",
+      "duration": 1.614
+    },
+    "b9": {
+      "file": "audio/hours/lines/b9.wav",
+      "duration": 3.797
+    }
+  },
+  "music": {
+    "file": "audio/music.wav",
+    "duration": 132.0
+  },
+  "sfx": {
+    "pop": {
+      "file": "audio/sfx/pop.wav",
+      "duration": 0.3
+    },
+    "whoosh": {
+      "file": "audio/sfx/whoosh.wav",
+      "duration": 0.55
+    },
+    "click": {
+      "file": "audio/sfx/click.wav",
+      "duration": 0.04
+    },
+    "chime": {
+      "file": "audio/sfx/chime.wav",
+      "duration": 0.7
+    },
+    "sting": {
+      "file": "audio/sfx/sting.wav",
+      "duration": 2.0
+    }
+  }
+}

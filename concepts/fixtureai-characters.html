@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FixtureAI characters</title>
+<style>
+  :root { --bg: #0a0a0a; --card: #141414; --line: rgba(255,255,255,0.08); --ink: #fafafa; --muted: #a1a1a1; --teal: #14b8a6; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: -apple-system, "Plus Jakarta Sans", "Helvetica Neue", sans-serif; }
+  header { padding: 28px 32px 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 18px; }
+  h1 { font-size: 22px; margin: 0; font-weight: 700; letter-spacing: -0.3px; }
+  header p { margin: 0; color: var(--muted); font-size: 14px; }
+  .controls { padding: 8px 32px 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .controls span { color: var(--muted); font-size: 13px; margin-right: 6px; }
+  button { background: #1f1f1f; color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-size: 14px; cursor: pointer; }
+  button.on { background: var(--teal); color: #042b27; border-color: transparent; font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; padding: 0 32px 40px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+  .card canvas { display: block; width: 100%; aspect-ratio: 1 / 1.05; background: radial-gradient(70% 60% at 50% 62%, #10201d, #0a0a0a 75%); }
+  .meta { padding: 14px 18px 18px; }
+  .meta b { display: block; font-size: 16px; }
+  .meta b small { color: var(--teal); font-weight: 700; margin-right: 8px; }
+  .meta p { margin: 6px 0 0; color: var(--muted); font-size: 13.5px; line-height: 1.4; }
+</style>
+</head>
+<body>
+<header>
+  <h1>FixtureAI characters</h1>
+  <p>Eight full characters: head, body, hands, one signature part each. White with teal. Pick a number.</p>
+</header>
+<div class="controls">
+  <span>Mood</span>
+  <button data-mood="neutral" class="on">Neutral</button>
+  <button data-mood="happy">Happy</button>
+  <button data-mood="talking">Talking</button>
+  <span style="margin-left:14px">Turn</span>
+  <button data-spin="idle" class="on">Idle</button>
+  <button data-spin="turn">Full turn</button>
+</div>
+<div class="grid" id="grid"></div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.180.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.180.0/examples/jsm/" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+
+const WHITE_TOP = new THREE.Color("#ffffff"), WHITE_BOTTOM = new THREE.Color("#dfe3e6");
+const TEAL = "#14b8a6", TEAL_GLOW = "#7ff5e6", INK = "#15181a", DARK = "#1b2224";
+const DEG = Math.PI / 180;
+let mood = "neutral", spin = "idle";
+
+function whiteGeometry(g) {
+  g.computeBoundingBox();
+  const { min, max } = g.boundingBox;
+  const p = g.attributes.position, col = new Float32Array(p.count * 3), c = new THREE.Color();
+  for (let i = 0; i < p.count; i++) {
+    const t = (p.getY(i) - min.y) / Math.max(1e-6, max.y - min.y);
+    c.copy(WHITE_BOTTOM).lerp(WHITE_TOP, t);
+    col.set([c.r, c.g, c.b], i * 3);
+  }
+  g.setAttribute("color", new THREE.Float32BufferAttribute(col, 3));
+  g.computeVertexNormals();
+  return g;
+}
+const bodyMat = () => new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.6, metalness: 0.02, emissive: "#ffffff", emissiveIntensity: 0.18 });
+const tealMat = (glow = 0.25) => new THREE.MeshStandardMaterial({ color: TEAL, emissive: TEAL_GLOW, emissiveIntensity: glow, roughness: 0.5, flatShading: true });
+const darkMat = () => new THREE.MeshStandardMaterial({ color: DARK, roughness: 0.7, flatShading: true });
+const inkMat = () => new THREE.MeshStandardMaterial({ color: INK, roughness: 0.9 });
+const white = (geo) => new THREE.Mesh(whiteGeometry(geo), bodyMat());
+const at = (mesh, x, y, z, rx = 0, ry = 0, rz = 0) => { mesh.position.set(x, y, z); mesh.rotation.set(rx, ry, rz); return mesh; };
+
+function roundedRect(w, h, r, depth) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x, y + r); s.lineTo(x, y + h - r); s.quadraticCurveTo(x, y + h, x + r, y + h); s.lineTo(x + w - r, y + h);
+  s.quadraticCurveTo(x + w, y + h, x + w, y + h - r); s.lineTo(x + w, y + r); s.quadraticCurveTo(x + w, y, x + w - r, y); s.lineTo(x + r, y); s.quadraticCurveTo(x, y, x, y + r);
+  const g = new THREE.ExtrudeGeometry(s, { depth, bevelEnabled: false, curveSegments: 4 });
+  g.translate(0, 0, -depth / 2);
+  return g;
+}
+const hexPts = (r, rot = 0) => Array.from({ length: 6 }, (_, i) => [r * Math.cos(i * 60 * DEG + rot), r * Math.sin(i * 60 * DEG + rot)]);
+function hexShape(r, rot = 0) { const s = new THREE.Shape(); hexPts(r, rot).forEach(([x, y], i) => (i ? s.lineTo(x, y) : s.moveTo(x, y))); s.closePath(); return s; }
+/** Hex prism standing on Y (flats to the front), height h, bevelled. */
+function hexPrism(r, h, bevel = 0.006) {
+  const g = new THREE.ExtrudeGeometry(hexShape(r), { depth: h, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 1, curveSegments: 1 });
+  g.rotateX(-Math.PI / 2); g.translate(0, -h / 2, 0);
+  return g;
+}
+/** Hex plate facing -Z (flats top and bottom), depth d. */
+function hexPlate(r, d, bevel = 0.008) {
+  const g = new THREE.ExtrudeGeometry(hexShape(r), { depth: d, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel * 0.9, bevelSegments: 1, curveSegments: 1 });
+  g.translate(0, 0, -d / 2);
+  return g;
+}
+function gearShape(teeth, r1, r2) {
+  const s = new THREE.Shape();
+  for (let i = 0; i < teeth; i++) {
+    const a = (i / teeth) * Math.PI * 2, w = Math.PI / teeth;
+    [[r1, a - w * 0.5], [r2, a - w * 0.3], [r2, a + w * 0.3], [r1, a + w * 0.5]].forEach(([r, t], k) => { const x = r * Math.cos(t), y = r * Math.sin(t); i === 0 && k === 0 ? s.moveTo(x, y) : s.lineTo(x, y); });
+  }
+  s.closePath();
+  return s;
+}
+/** Low-poly ball. */
+const ball = (r, seg = 7) => new THREE.SphereGeometry(r, seg + 2, seg);
+/** Two mitten hands floating beside the body; they bob with `t`. */
+function hands(g, x, y, z, r = 0.018) {
+  return [1, -1].map((sx) => { const m = white(ball(r, 5)); m.position.set(sx * x, y, z); g.add(m); m.userData.hand = sx; return m; });
+}
+function face(group, z, { eyeDx = 0.022, eyeY = 0.01, mouthY = -0.02, scale = 1 } = {}) {
+  const eye = roundedRect(0.017 * scale, 0.028 * scale, 0.006 * scale, 0.005);
+  const happy = new THREE.TorusGeometry(0.0095 * scale, 0.0024 * scale, 6, 12, Math.PI * 0.8);
+  const eyes = [], happies = [];
+  for (const sx of [1, -1]) {
+    const e = new THREE.Mesh(eye, inkMat()); e.position.set(sx * eyeDx, eyeY, z); group.add(e); eyes.push(e);
+    const h = new THREE.Mesh(happy, inkMat()); h.position.set(sx * eyeDx, eyeY + 0.004 * scale, z); h.visible = false; group.add(h); happies.push(h);
+  }
+  const mouth = new THREE.Mesh(roundedRect(0.016 * scale, 0.0045 * scale, 0.002, 0.004), inkMat()); mouth.position.set(0, mouthY, z); group.add(mouth);
+  const open = new THREE.Mesh(roundedRect(0.016 * scale, 0.012 * scale, 0.004, 0.005), inkMat()); open.position.set(0, mouthY, z); open.visible = false; group.add(open);
+  return { eyes, happies, mouth, open };
+}
+
+const CONCEPTS = [
+  {
+    n: 9, name: "Nutty", note: "Hex-nut head on a round body, stubby arms, a bolt-tipped antenna. The classic mascot build.",
+    build(g) {
+      const head = new THREE.Group(); g.add(head);
+      head.add(white(hexPlate(0.075, 0.05, 0.009)));
+      const parts = face(head, -0.036, { eyeDx: 0.02, eyeY: 0.006, mouthY: -0.02 });
+      head.position.y = 0.05;
+      const ant = at(new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.05, 6), darkMat()), 0, 0.125, 0); g.add(ant);
+      g.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.012, 6), tealMat(0.5)), 0, 0.153, 0));
+      const body = white(new THREE.CapsuleGeometry(0.045, 0.03, 3, 9)); body.position.y = -0.045; body.scale.set(1, 0.85, 0.8); g.add(body);
+      g.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.047, 0.004, 5, 18), tealMat()), 0, -0.052, 0, Math.PI / 2));
+      for (const sx of [1, -1]) { const arm = white(new THREE.CapsuleGeometry(0.011, 0.03, 2, 6)); arm.position.set(sx * 0.058, -0.04, 0); arm.rotation.z = sx * 0.5; g.add(arm); }
+      for (const sx of [1, -1]) g.add(at(white(hexPlate(0.02, 0.018, 0.003)), sx * 0.028, -0.1, 0, Math.PI / 2));
+      parts.head = head; return parts;
+    },
+  },
+  {
+    n: 10, name: "Sprocket", note: "Faceted helmet head with a tilted nut crown, floating mitten hands, a teal hover ring instead of feet.",
+    build(g) {
+      const head = new THREE.Group(); g.add(head);
+      head.add(white(ball(0.072, 8)));
+      const parts = face(head, -0.062, { eyeDx: 0.023, eyeY: 0.004, mouthY: -0.026, scale: 1.05 });
+      const crown = at(new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.012, 4, 6), tealMat(0.2)), 0.012, 0.062, 0, Math.PI / 2 + 0.25, 0, -0.2); head.add(crown);
+      head.position.y = 0.03;
+      const neck = at(new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.024, 0.02, 8), darkMat()), 0, -0.05, 0); g.add(neck);
+      const body = white(new RoundedBoxGeometry(0.08, 0.06, 0.06, 2, 0.02)); body.position.y = -0.085; g.add(body);
+      parts.hands = hands(g, 0.075, -0.075, -0.01, 0.017);
+      g.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.005, 5, 24), tealMat(0.6)), 0, -0.13, 0, Math.PI / 2));
+      parts.head = head; return parts;
+    },
+  },
+  {
+    n: 11, name: "Visor", note: "Rounded head with a dark teal visor the eyes glow through. Small chest body and antenna. The 'AI' one.",
+    build(g) {
+      const head = new THREE.Group(); g.add(head);
+      head.add(white(new RoundedBoxGeometry(0.13, 0.1, 0.09, 3, 0.03)));
+      const visor = at(new THREE.Mesh(new RoundedBoxGeometry(0.105, 0.04, 0.02, 2, 0.01), new THREE.MeshStandardMaterial({ color: "#07302c", roughness: 0.3, metalness: 0.2, emissive: TEAL, emissiveIntensity: 0.15 })), 0, 0.012, -0.042); head.add(visor);
+      const parts = face(head, -0.054, { eyeDx: 0.024, eyeY: 0.012, mouthY: -0.028, scale: 0.9 });
+      parts.eyes.forEach((e) => (e.material = new THREE.MeshStandardMaterial({ color: "#ffffff", emissive: TEAL_GLOW, emissiveIntensity: 1.2 })));
+      parts.happies.forEach((e) => (e.material = parts.eyes[0].material));
+      head.position.y = 0.035;
+      g.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.0025, 0.0025, 0.04, 6), darkMat()), 0.04, 0.105, 0, 0, 0, -0.25));
+      g.add(at(new THREE.Mesh(ball(0.008, 5), tealMat(0.8)), 0.045, 0.127, 0));
+      const body = white(new RoundedBoxGeometry(0.09, 0.055, 0.06, 2, 0.018)); body.position.y = -0.052; g.add(body);
+      g.add(at(new THREE.Mesh(new RoundedBoxGeometry(0.03, 0.012, 0.004, 1, 0.003), tealMat(0.5)), 0, -0.045, -0.031));
+      parts.hands = hands(g, 0.066, -0.05, -0.005, 0.015);
+      parts.head = head; return parts;
+    },
+  },
+  {
+    n: 12, name: "Gearhead", note: "Thick gear head with a small teal gear as an ear, a trapezoid body and chunky arms. The builder.",
+    build(g) {
+      const head = new THREE.Group(); g.add(head);
+      const gear = new THREE.ExtrudeGeometry(gearShape(10, 0.062, 0.078), { depth: 0.05, bevelEnabled: true, bevelThickness: 0.006, bevelSize: 0.005, bevelSegments: 1, curveSegments: 1 }); gear.translate(0, 0, -0.025);
+      head.add(white(gear));
+      head.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.004, 5, 24), tealMat()), 0, 0, -0.032));
+      const parts = face(head, -0.034, { eyeDx: 0.02, eyeY: 0.007, mouthY: -0.02, scale: 0.95 });
+      const ear = new THREE.ExtrudeGeometry(gearShape(7, 0.018, 0.026), { depth: 0.01, bevelEnabled: false }); ear.rotateY(Math.PI / 2);
+      head.add(at(new THREE.Mesh(ear, tealMat(0.3)), 0.078, 0.035, 0));
+      head.position.y = 0.04;
+      const body = white(new THREE.CylinderGeometry(0.04, 0.055, 0.065, 8)); body.position.y = -0.07; g.add(body);
+      g.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.056, 0.056, 0.008, 8), tealMat()), 0, -0.104, 0));
+      for (const sx of [1, -1]) { const arm = white(new THREE.CapsuleGeometry(0.013, 0.035, 2, 6)); arm.position.set(sx * 0.066, -0.06, 0); arm.rotation.z = sx * 0.35; g.add(arm); g.add(at(new THREE.Mesh(ball(0.016, 5), tealMat(0.2)), sx * 0.078, -0.088, 0)); }
+      parts.head = head; return parts;
+    },
+  },
+  {
+    n: 13, name: "Spanner", note: "Open-end wrench head: the jaw opening reads as two ears. Slim neck, hex body. The most iconic silhouette.",
+    build(g) {
+      const head = new THREE.Group(); g.add(head);
+      const s = new THREE.Shape();
+      const pts = [[-0.062, -0.05], [0.062, -0.05], [0.072, 0.0], [0.066, 0.055], [0.04, 0.075], [0.026, 0.05], [0.028, 0.0], [-0.028, 0.0], [-0.026, 0.05], [-0.04, 0.075], [-0.066, 0.055], [-0.072, 0.0]];
+      pts.forEach(([x, y], i) => (i ? s.lineTo(x, y) : s.moveTo(x, y))); s.closePath();
+      const geo = new THREE.ExtrudeGeometry(s, { depth: 0.045, bevelEnabled: true, bevelThickness: 0.007, bevelSize: 0.007, bevelSegments: 1, curveSegments: 1 }); geo.translate(0, 0, -0.0225);
+      head.add(white(geo));
+      head.add(at(new THREE.Mesh(new RoundedBoxGeometry(0.04, 0.006, 0.05, 1, 0.002), tealMat(0.4)), 0, 0.003, 0));
+      const parts = face(head, -0.032, { eyeDx: 0.024, eyeY: -0.012, mouthY: -0.036, scale: 0.95 });
+      head.position.y = 0.04;
+      g.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.016, 0.03, 8), darkMat()), 0, -0.02, 0));
+      const body = white(hexPrism(0.05, 0.06, 0.005)); body.position.y = -0.065; g.add(body);
+      g.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.046, 0.0035, 5, 6), tealMat()), 0, -0.078, 0, Math.PI / 2, 0, Math.PI / 6));
+      parts.hands = hands(g, 0.07, -0.06, -0.01, 0.016);
+      parts.head = head; return parts;
+    },
+  },
+  {
+    n: 14, name: "Domey", note: "Cap-nut dome with a tiny teal nut for a hat, a wide washer skirt and little arms. Soft and friendly.",
+    build(g) {
+      const head = new THREE.Group(); g.add(head);
+      head.add(white(hexPrism(0.07, 0.06, 0.005)));
+      const dome = new THREE.SphereGeometry(0.0605, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2); dome.translate(0, 0.03, 0); head.add(white(dome));
+      head.add(at(white(hexPlate(0.016, 0.012, 0.002)), 0.03, 0.095, -0.005, Math.PI / 2 + 0.3, 0, -0.2));
+      head.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.014, 6), tealMat(0.5)), 0.03, 0.095, -0.005, 0.3, 0, -0.2));
+      const parts = face(head, -0.066, { eyeDx: 0.021, eyeY: -0.004, mouthY: -0.028 });
+      head.position.y = 0.025;
+      g.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.085, 0.012, 24), tealMat()), 0, -0.012, 0));
+      const skirt = white(new THREE.CylinderGeometry(0.06, 0.075, 0.05, 12)); skirt.position.y = -0.045; g.add(skirt);
+      for (const sx of [1, -1]) { const arm = white(new THREE.CapsuleGeometry(0.01, 0.028, 2, 6)); arm.position.set(sx * 0.082, -0.03, 0); arm.rotation.z = sx * 0.9; g.add(arm); }
+      parts.head = head; return parts;
+    },
+  },
+  {
+    n: 15, name: "Rotor", note: "Hex-nut body that hovers on two tiny teal rotor rings. Big eyes, no limbs. The drone.",
+    build(g) {
+      const head = new THREE.Group(); g.add(head);
+      head.add(white(hexPlate(0.085, 0.06, 0.012)));
+      const parts = face(head, -0.044, { eyeDx: 0.026, eyeY: 0.0, mouthY: -0.03, scale: 1.25 });
+      for (const sx of [1, -1]) {
+        head.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.03, 6), darkMat()), sx * 0.05, 0.095, 0));
+        const rotor = at(new THREE.Mesh(new THREE.TorusGeometry(0.028, 0.004, 4, 16), tealMat(0.6)), sx * 0.05, 0.112, 0, Math.PI / 2); rotor.userData.rotor = true; head.add(rotor);
+        head.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.002, 16), new THREE.MeshStandardMaterial({ color: TEAL, transparent: true, opacity: 0.25, emissive: TEAL_GLOW, emissiveIntensity: 0.3 })), sx * 0.05, 0.112, 0));
+      }
+      head.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.02, 0.014, 6), tealMat(0.3)), 0, -0.084, 0));
+      parts.head = head; parts.hover = true; return parts;
+    },
+  },
+  {
+    n: 16, name: "Hoot", note: "Soft cube head with two teal hex tufts like an owl, round body, big feet. The wise one.",
+    build(g) {
+      const head = new THREE.Group(); g.add(head);
+      head.add(white(new RoundedBoxGeometry(0.12, 0.1, 0.1, 3, 0.035)));
+      for (const sx of [1, -1]) head.add(at(white(hexPlate(0.02, 0.018, 0.003)), sx * 0.048, 0.06, 0, 0.3 * sx, 0, sx * 0.4));
+      for (const sx of [1, -1]) head.add(at(new THREE.Mesh(new THREE.ConeGeometry(0.012, 0.03, 6), tealMat(0.3)), sx * 0.052, 0.075, 0, 0, 0, -sx * 0.35));
+      const parts = face(head, -0.052, { eyeDx: 0.026, eyeY: 0.008, mouthY: -0.026, scale: 1.1 });
+      head.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.02, 0.003, 5, 16), tealMat(0.2)), 0.026, 0.008, -0.051));
+      head.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.02, 0.003, 5, 16), tealMat(0.2)), -0.026, 0.008, -0.051));
+      head.position.y = 0.03;
+      const body = white(ball(0.055, 7)); body.position.y = -0.065; body.scale.set(1, 0.8, 0.85); g.add(body);
+      g.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.04, 0.004, 5, 16), tealMat()), 0, -0.05, 0, Math.PI / 2));
+      for (const sx of [1, -1]) g.add(at(white(new RoundedBoxGeometry(0.03, 0.012, 0.04, 1, 0.005)), sx * 0.028, -0.115, -0.01));
+      parts.head = head; return parts;
+    },
+  },
+];
+
+const grid = document.getElementById("grid");
+const cards = CONCEPTS.map((c) => {
+  const card = document.createElement("div"); card.className = "card";
+  const canvas = document.createElement("canvas"); card.appendChild(canvas);
+  const meta = document.createElement("div"); meta.className = "meta";
+  meta.innerHTML = `<b><small>${c.n}</small>${c.name}</b><p>${c.note}</p>`; card.appendChild(meta); grid.appendChild(card);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+  renderer.shadowMap.enabled = true; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 10); camera.position.set(0.0, 0.03, -0.62); camera.lookAt(0, -0.005, 0);
+  scene.add(new THREE.HemisphereLight("#2b2f7a", "#120a08", 0.6));
+  const fill = new THREE.DirectionalLight("#3f4ad8", 0.8); fill.position.set(-3, 1.6, -2.5); scene.add(fill);
+  const rim = new THREE.DirectionalLight("#ffb270", 3.2); rim.position.set(-1.8, 2.6, 2.8); rim.castShadow = true; scene.add(rim);
+  const key = new THREE.PointLight("#ffffff", 0.4, 1.6, 2); key.position.set(-0.2, 0.35, -0.3); scene.add(key);
+  const desk = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ color: "#2a1d14", roughness: 1 })); desk.rotation.x = -Math.PI / 2; desk.position.y = -0.135; desk.receiveShadow = true; scene.add(desk);
+  const g = new THREE.Group(); scene.add(g);
+  const parts = c.build(g);
+  // Fit: scale the character so its height is 0.24 and its feet sit on the desk.
+  const box = new THREE.Box3().setFromObject(g);
+  const h = box.max.y - box.min.y, s = 0.24 / h;
+  g.scale.setScalar(s); g.position.y = -0.135 - box.min.y * s + (parts.hover ? 0.03 : 0) + 0.002;
+  g.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
+  return { canvas, renderer, scene, camera, g, parts, seed: c.n * 1.7, baseY: g.position.y };
+});
+
+function noise(t, s) { return Math.sin(t * 0.7 + s) * 0.5 + Math.sin(t * 1.9 + s * 2.1) * 0.3 + Math.sin(t * 0.23 + s * 0.7) * 0.2; }
+function blink(t, s) { const period = 3.4 + (s % 1.3), k = ((t + s) % period); return k < 0.1 ? k / 0.1 : k < 0.25 ? 1 - (k - 0.1) / 0.15 : 0; }
+
+function frame(now) {
+  const t = now / 1000;
+  for (const c of cards) {
+    const w = c.canvas.clientWidth, h = c.canvas.clientHeight;
+    if (c.canvas.width !== w * c.renderer.getPixelRatio()) { c.renderer.setSize(w, h, false); c.camera.aspect = w / h; c.camera.updateProjectionMatrix(); }
+    const closure = blink(t, c.seed);
+    const talking = mood === "talking";
+    const open = talking && Math.sin(t * 11 + c.seed) > 0.1;
+    const happy = mood === "happy";
+    c.parts.eyes.forEach((e) => { e.visible = !happy; e.scale.y = 1 - 0.92 * closure; });
+    c.parts.happies.forEach((e) => { e.visible = happy; e.scale.y = 1 - 0.9 * closure; });
+    c.parts.mouth.visible = !open; c.parts.open.visible = open;
+    c.g.rotation.set(0, spin === "turn" ? t * 0.9 : -10 * DEG + 7 * DEG * noise(t * 0.6, c.seed + 3), 0);
+    if (c.parts.head) c.parts.head.rotation.set(1.5 * DEG * noise(t, c.seed) - (open ? 1.5 * DEG : 0), 2 * DEG * noise(t * 0.8, c.seed + 1), 1.5 * DEG * noise(t, c.seed + 5) + (happy ? 4 * DEG : 0));
+    c.g.position.y = c.baseY + (c.parts.hover ? 0.008 : 0.003) * Math.sin(t * 1.4 + c.seed);
+    if (c.parts.hands) c.parts.hands.forEach((m) => { m.position.y += 0; m.rotation.z = 0.3 * Math.sin(t * 1.4 + c.seed + m.userData.hand); });
+    c.g.traverse((m) => { if (m.userData.rotor) m.rotation.z = t * 20; });
+    c.renderer.render(c.scene, c.camera);
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+document.querySelectorAll("[data-mood]").forEach((b) => b.addEventListener("click", () => { mood = b.dataset.mood; document.querySelectorAll("[data-mood]").forEach((x) => x.classList.toggle("on", x === b)); }));
+document.querySelectorAll("[data-spin]").forEach((b) => b.addEventListener("click", () => { spin = b.dataset.spin; document.querySelectorAll("[data-spin]").forEach((x) => x.classList.toggle("on", x === b)); }));
+</script>
+</body>
+</html>

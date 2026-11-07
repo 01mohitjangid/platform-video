@@ -1,84 +1,26 @@
-# platform-video
+# FixtureLabs videos
 
-FixtureLabs story videos, built with Remotion.
+Short product videos in a 3D low-poly style: a student at a desk talks with FixtureAI (the white Visor bot), with
+real-looking app screens cut in. Rendered with Remotion. Every episode renders twice: a 9:16 reel and a 16:9 wide cut.
 
-```
-.gitignore
-concepts/
-  fixtureai-bots.html
-  fixtureai-characters.html
-package-lock.json
-package.json
-public/
-  audio/
-    ask/
-      levels.json
-      manifest.json
-    contest/
-      levels.json
-      manifest.json
-    dfm/
-      levels.json
-      manifest.json
-    hours/
-      levels.json
-      manifest.json
-    interview/
-      levels.json
-      manifest.json
-    lug-nut/
-      levels.json
-      manifest.json
-  brand/
-    fixturelabs-white.png
-    fixturelabs-wordmark-teal.png
-    fixturelabs.svg
-remotion.config.ts
-src/
-  Episode.tsx
-  Root.tsx
-  episodes.ts
-  index.ts
-  overlay/
-    Subtitle.tsx
-  scene/
-    Bot.tsx
-    Memora.tsx
-    Person.tsx
-    Post.tsx
-    Room.tsx
-    Scene.tsx
-    camera.ts
-    dev-entry.tsx
-    face.ts
-    motion.ts
-  scripts/
-    ask.ts
-    contest.ts
-    dfm.ts
-    hours.ts
-    interview.ts
-    lug-nut.ts
-  timeline.ts
-  types.ts
-  ui/
-    Insert.tsx
-    dev-entry.tsx
-    lib.tsx
-    scenes/
-      Ask.tsx
-      Challenge.tsx
-      Contest.tsx
-      Dfm.tsx
-      Endcard.tsx
-      Feedback.tsx
-      Hours.tsx
-      Interview.tsx
-      Passed.tsx
-      Title.tsx
-tools/
-  audio.py
-  qa-stills.sh
-  sheet.sh
-tsconfig.json
-```
+| Episode     | Title                                       | Feeling       |
+| ----------- | ------------------------------------------- | ------------- |
+| `lug-nut`   | This lug nut is harder than your finals.    | Pride         |
+| `interview` | The interview I bombed.                     | Second chance |
+| `hours`     | The hours that count.                       | Being seen    |
+| `contest`   | The contest I almost skipped.               | Belonging     |
+| `dfm`       | The bracket that cost four times more.      | Craft         |
+| `ask`       | Nobody at home is an engineer.              | Permission    |
+
+## Make a video
+
+1. Script: `src/scripts/<episode>.ts` (lines, camera, emotion, inserts). Register it in `src/episodes.ts` and `src/Root.tsx`.
+   Every script is a story in four acts: a `title` card sets the time and the stakes, the person tries the wrong thing, FixtureAI turns it, the payoff lands (a second `title` card jumps forward in time when the payoff happens later).
+2. Voices: `EPISODE=<episode> SCRIPT_TS=src/scripts/<episode>.ts python tools/audio.py lines`, then `… manifest`.
+   Needs `OPENAI_API_KEY`, numpy and ffmpeg. Voices are cached in `$TTS_RAW_DIR`.
+3. Screens: one component per insert kind in `src/ui/scenes/`, listed in `src/types.ts` and `src/ui/Insert.tsx`.
+4. Render: `npx remotion render src/index.ts LugNut out/lug-nut.mp4` (or `LugNutWide`).
+
+`npm run studio` opens the Remotion studio. `tools/sheet.sh out/x.mp4` makes contact sheets for a frame-by-frame review.
+
+Music and sound effects live in `public/audio/` and are shared by every episode. The brand voice rules are in `../platform/BRAND.md` (the platform repo).
