@@ -2,83 +2,107 @@
   "lines": {
     "p1": {
       "file": "audio/interview/lines/p1.wav",
-      "duration": 5.06
+      "duration": 3.135
+    },
+    "p1b": {
+      "file": "audio/interview/lines/p1b.wav",
+      "duration": 2.828
     },
     "p2": {
       "file": "audio/interview/lines/p2.wav",
-      "duration": 4.38
+      "duration": 4.931
     },
     "b1": {
       "file": "audio/interview/lines/b1.wav",
-      "duration": 1.436
+      "duration": 1.46
     },
     "p3": {
       "file": "audio/interview/lines/p3.wav",
-      "duration": 2.178
+      "duration": 2.63
+    },
+    "p3b": {
+      "file": "audio/interview/lines/p3b.wav",
+      "duration": 2.733
     },
     "b2": {
       "file": "audio/interview/lines/b2.wav",
-      "duration": 2.477
+      "duration": 3.218
     },
     "p4": {
       "file": "audio/interview/lines/p4.wav",
-      "duration": 7.374
+      "duration": 4.881
+    },
+    "p4b": {
+      "file": "audio/interview/lines/p4b.wav",
+      "duration": 4.481
     },
     "b3": {
       "file": "audio/interview/lines/b3.wav",
-      "duration": 3.427
+      "duration": 3.593
     },
     "b4": {
       "file": "audio/interview/lines/b4.wav",
-      "duration": 3.9
+      "duration": 4.223
     },
     "b5": {
       "file": "audio/interview/lines/b5.wav",
-      "duration": 5.939
+      "duration": 4.171
+    },
+    "b5b": {
+      "file": "audio/interview/lines/b5b.wav",
+      "duration": 2.992
     },
     "p6": {
       "file": "audio/interview/lines/p6.wav",
-      "duration": 5.457
+      "duration": 3.882
     },
     "b6": {
       "file": "audio/interview/lines/b6.wav",
-      "duration": 3.683
+      "duration": 3.801
     },
     "p7": {
       "file": "audio/interview/lines/p7.wav",
-      "duration": 5.515
+      "duration": 6.208
     },
     "b7": {
       "file": "audio/interview/lines/b7.wav",
-      "duration": 2.457
+      "duration": 2.987
     },
     "p8": {
       "file": "audio/interview/lines/p8.wav",
-      "duration": 0.748
+      "duration": 0.901
     },
     "b8": {
       "file": "audio/interview/lines/b8.wav",
-      "duration": 4.78
+      "duration": 5.149
     },
     "p9": {
       "file": "audio/interview/lines/p9.wav",
-      "duration": 2.443
+      "duration": 2.134
     },
     "b9": {
       "file": "audio/interview/lines/b9.wav",
-      "duration": 0.644
+      "duration": 0.672
     },
     "p10": {
       "file": "audio/interview/lines/p10.wav",
-      "duration": 1.447
+      "duration": 1.898
+    },
+    "p10b": {
+      "file": "audio/interview/lines/p10b.wav",
+      "duration": 1.764
     },
     "b10": {
       "file": "audio/interview/lines/b10.wav",
-      "duration": 3.607
+      "duration": 3.019
+    },
+    "b10b": {
+      "file": "audio/interview/lines/b10b.wav",
+      "duration": 2.829
     },
     "b11": {
       "file": "audio/interview/lines/b11.wav",
-      "duration": 2.997
+      "duration": 4.105
     }
   },
   "music": {
