@@ -8,7 +8,7 @@
     EPISODE=zero-cpu SCRIPT_TS=src/scripts/zero-cpu.ts python tools/audio.py lines   # another episode's voices
 
 Needs numpy, curl and ffmpeg ($FFMPEG, else imageio_ffmpeg, else PATH). The OpenAI key comes from
-$OPENAI_API_KEY or ../../.env and is handed to curl on stdin only - never on argv, never in a file.
+$OPENAI_API_KEY or .env in this repo and is handed to curl on stdin only - never on argv, never in a file.
 Raw TTS downloads are cached in $TTS_RAW_DIR (default: system temp) so re-trimming is free.
 """
 
@@ -34,7 +34,7 @@ SCRIPT_TS = Path(os.environ.get("SCRIPT_TS") or ROOT / "src" / "script.ts")
 EP_DIR = AUDIO / EPISODE if EPISODE else AUDIO
 EP_REL = f"audio/{EPISODE}/" if EPISODE else "audio/"
 LINES_DIR, SFX_DIR = EP_DIR / "lines", AUDIO / "sfx"
-ENV_FILE = ROOT.parents[1] / ".env"
+ENV_FILE = ROOT / ".env"
 RAW_DIR = Path(os.environ.get("TTS_RAW_DIR") or Path(tempfile.gettempdir()) / "fixturelabs-tts")
 
 SR = 48000
@@ -199,9 +199,18 @@ def place(bus, x, at, gain=1.0, pan=0.0):
 LINE_RE = re.compile(r'id:\s*"([^"]+)"\s*,\s*speaker:\s*"(person|bot)"\s*,\s*text:\s*"([^"]*)"')
 
 
+TONE_RE = re.compile(r'tone:\s*"([^"]*)"')
+RATE_RE = re.compile(r"rate:\s*([\d.]+)")  # optional per-line speed-up on top of TEMPO, for a line that must sound rushed
+
+
 def parse_lines():
+    """One line per script row. `tone` is the optional per-line acting direction (how to say it, where to pause)."""
     src = SCRIPT_TS.read_text()
-    lines = [{"id": i, "speaker": s, "text": t} for i, s, t in LINE_RE.findall(src)]
+    lines = []
+    for row in src.splitlines():
+        m, tone, rate = LINE_RE.search(row), TONE_RE.search(row), RATE_RE.search(row)
+        if m:
+            lines.append({"id": m[1], "speaker": m[2], "text": m[3], "tone": tone[1] if tone else "", "rate": float(rate[1]) if rate else 1.0})
     assert len(lines) == len(re.findall(r'speaker:\s*"', src)), "script.ts has a line LINE_RE did not parse"
     assert len({ln["id"] for ln in lines}) == len(lines), "duplicate line ids in script.ts"
     return lines
@@ -258,7 +267,7 @@ def synthesize(line, key, raw):
     for model, accepts_instructions in TTS_MODELS:
         body = {"model": model, "voice": VOICES[line["speaker"]], "input": line["text"], "response_format": "wav"}
         if accepts_instructions:
-            body["instructions"] = INSTRUCTIONS[line["speaker"]]
+            body["instructions"] = INSTRUCTIONS[line["speaker"]] + (f" For this line: {line['tone']}" if line["tone"] else "")
         for attempt in range(3):
             code, detail = tts_request(body, key, raw)
             if code == 200:
@@ -297,12 +306,12 @@ def cmd_lines(force=False):
     for ln in lines:
         out = LINES_DIR / f"{ln['id']}.wav"
         voice = VOICES[ln["speaker"]]
-        stamp = hashlib.sha1(f"{voice}|{ln['text']}".encode()).hexdigest()[:8]
-        raw, dec = RAW_DIR / f"{ln['id']}-{stamp}.raw.wav", RAW_DIR / f"{ln['id']}-{stamp}.48k.wav"
-        if out.exists() and dec.exists() and not force:  # same id AND same text already rendered
+        stamp = hashlib.sha1("|".join(filter(None, [voice, ln["text"], ln["tone"]])).encode()).hexdigest()[:8]
+        raw, dec = RAW_DIR / f"{ln['id']}-{stamp}.raw.wav", RAW_DIR / f"{ln['id']}-{stamp}-{TEMPO * ln['rate']:.3f}.48k.wav"
+        if out.exists() and dec.exists() and not force:  # same id, text, tone AND tempo already rendered
             continue
         used[ln["id"]] = "cached" if raw.exists() else synthesize(ln, key, raw)
-        subprocess.run([ff, "-y", "-v", "error", "-i", str(raw), "-af", f"atempo={TEMPO}", "-ar", str(SR), "-ac", "1", "-c:a", "pcm_s16le", str(dec)], check=True)
+        subprocess.run([ff, "-y", "-v", "error", "-i", str(raw), "-af", f"atempo={TEMPO * ln['rate']:.3f}", "-ar", str(SR), "-ac", "1", "-c:a", "pcm_s16le", str(dec)], check=True)
         x = set_peak(trim(read_wav(dec)), -1.0)
         write_wav(out, x)
         print(f"  {ln['id']:<4} {ln['speaker']:<7} {voice:<6} {used[ln['id']]:<16} {len(x) / SR:6.2f}s  {ln['text'][:60]}")
