@@ -44,6 +44,10 @@ export interface Line {
   onInsert?: boolean;
   /** FixtureAI's mood for its own line (held for the whole shot). Default "neutral". */
   mood?: Mood;
+  /** Acting direction for the voice (how to say it, where to pause). Sent to TTS with the speaker's base direction. */
+  tone?: string;
+  /** Speed-up for this one voice line (1.3 = 30% faster, pitch kept). For a line that must sound rushed. */
+  rate?: number;
 }
 
 export type Mood = "neutral" | "happy" | "proud";
