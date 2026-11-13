@@ -2,67 +2,95 @@
   "lines": {
     "p1": {
       "file": "audio/ask/lines/p1.wav",
-      "duration": 3.882
+      "duration": 4.117
     },
     "p2": {
       "file": "audio/ask/lines/p2.wav",
-      "duration": 4.588
+      "duration": 2.384
+    },
+    "p2b": {
+      "file": "audio/ask/lines/p2b.wav",
+      "duration": 2.963
     },
     "b1": {
       "file": "audio/ask/lines/b1.wav",
-      "duration": 2.183
+      "duration": 3.815
     },
     "p3": {
       "file": "audio/ask/lines/p3.wav",
-      "duration": 3.083
+      "duration": 3.348
     },
     "b2": {
       "file": "audio/ask/lines/b2.wav",
-      "duration": 4.392
+      "duration": 2.685
+    },
+    "b2b": {
+      "file": "audio/ask/lines/b2b.wav",
+      "duration": 2.457
     },
     "p4": {
       "file": "audio/ask/lines/p4.wav",
-      "duration": 4.597
+      "duration": 3.714
+    },
+    "p4b": {
+      "file": "audio/ask/lines/p4b.wav",
+      "duration": 2.029
     },
     "b3": {
       "file": "audio/ask/lines/b3.wav",
-      "duration": 7.204
+      "duration": 2.716
+    },
+    "b3b": {
+      "file": "audio/ask/lines/b3b.wav",
+      "duration": 4.027
     },
     "p5": {
       "file": "audio/ask/lines/p5.wav",
-      "duration": 1.541
+      "duration": 0.988
     },
     "b4": {
       "file": "audio/ask/lines/b4.wav",
-      "duration": 3.228
+      "duration": 4.29
     },
     "p6": {
       "file": "audio/ask/lines/p6.wav",
-      "duration": 2.17
+      "duration": 2.496
     },
     "b5": {
       "file": "audio/ask/lines/b5.wav",
-      "duration": 3.067
+      "duration": 4.812
+    },
+    "b5b": {
+      "file": "audio/ask/lines/b5b.wav",
+      "duration": 1.105
     },
     "p7": {
       "file": "audio/ask/lines/p7.wav",
-      "duration": 3.532
+      "duration": 4.715
     },
     "b6": {
       "file": "audio/ask/lines/b6.wav",
-      "duration": 1.248
+      "duration": 1.041
     },
     "p8": {
       "file": "audio/ask/lines/p8.wav",
-      "duration": 0.983
+      "duration": 1.089
+    },
+    "p8b": {
+      "file": "audio/ask/lines/p8b.wav",
+      "duration": 3.196
     },
     "b7": {
       "file": "audio/ask/lines/b7.wav",
-      "duration": 4.797
+      "duration": 2.401
+    },
+    "b7b": {
+      "file": "audio/ask/lines/b7b.wav",
+      "duration": 3.014
     },
     "b8": {
       "file": "audio/ask/lines/b8.wav",
-      "duration": 3.034
+      "duration": 3.476
     }
   },
   "music": {
