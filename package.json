@@ -5,6 +5,7 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "sh tools/render.sh",
+    "save-version": "python3 tools/save-version.py",
     "still": "remotion still src/index.ts"
   },
   "dependencies": {
