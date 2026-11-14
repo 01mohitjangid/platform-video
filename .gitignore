@@ -1,5 +1,15 @@
-node_modules
-out
+# Dependencies
+node_modules/
+
+# Renders, previews and QA stills (rebuild with `npm run render`)
+out/
+
+# Generated audio (rebuild with tools/audio.py). manifest.json and levels.json stay tracked.
 public/audio/**/*.wav
 public/audio/*.mp3
+
+# Secrets
 .env
+
+# OS
+.DS_Store
