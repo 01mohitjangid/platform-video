@@ -16,6 +16,12 @@ import { SEQUENCE as dfm } from "./scripts/dfm";
 import askManifest from "../public/audio/ask/manifest.json";
 import askLevels from "../public/audio/ask/levels.json";
 import { SEQUENCE as ask } from "./scripts/ask";
+import askV1Manifest from "../public/audio/ask-v1/manifest.json";
+import askV1Levels from "../public/audio/ask-v1/levels.json";
+import { SEQUENCE as askV1 } from "./scripts/ask-v1";
+import interviewV1Manifest from "../public/audio/interview-v1/manifest.json";
+import interviewV1Levels from "../public/audio/interview-v1/levels.json";
+import { SEQUENCE as interviewV1 } from "./scripts/interview-v1";
 import type { Levels } from "./timeline";
 import type { AudioManifest, SequenceItem } from "./types";
 
@@ -33,6 +39,8 @@ export const EPISODES = {
   contest: { sequence: contest, manifest: contestManifest as AudioManifest, levels: contestLevels as Levels },
   dfm: { sequence: dfm, manifest: dfmManifest as AudioManifest, levels: dfmLevels as Levels },
   ask: { sequence: ask, manifest: askManifest as AudioManifest, levels: askLevels as Levels },
+  "ask-v1": { sequence: askV1, manifest: askV1Manifest as AudioManifest, levels: askV1Levels as Levels },
+  "interview-v1": { sequence: interviewV1, manifest: interviewV1Manifest as AudioManifest, levels: interviewV1Levels as Levels },
 } satisfies Record<string, Episode>;
 
 export type EpisodeId = keyof typeof EPISODES;
