@@ -1,11 +1,11 @@
 """Audio pipeline for the FixtureLabs videos.
 
-    python tools/audio.py all              # lines -> music -> sfx -> manifest (verifies everything)
-    python tools/audio.py lines [--force]  # TTS every line in src/script.ts, write levels.json
-    python tools/audio.py music            # compose public/audio/music.wav
-    python tools/audio.py sfx              # synthesise public/audio/sfx/<kind>.wav
-    python tools/audio.py manifest         # verify + write public/audio/manifest.json
-    EPISODE=zero-cpu SCRIPT_TS=src/scripts/zero-cpu.ts python tools/audio.py lines   # another episode's voices
+    EPISODE=ask python tools/audio.py lines [--force]  # TTS every line in src/scripts/ask.ts, write levels.json
+    EPISODE=ask python tools/audio.py manifest         # verify + write public/audio/ask/manifest.json
+    EPISODE=ask python tools/audio.py all              # lines -> music -> sfx -> manifest (verifies everything)
+    python tools/audio.py music                        # compose public/audio/music.wav (shared)
+    python tools/audio.py sfx                          # synthesise public/audio/sfx/<kind>.wav (shared)
+    SCRIPT_TS=path/to/other.ts overrides the script path (default: src/scripts/$EPISODE.ts).
 
 Needs numpy, curl and ffmpeg ($FFMPEG, else imageio_ffmpeg, else PATH). The OpenAI key comes from
 $OPENAI_API_KEY or .env in this repo and is handed to curl on stdin only - never on argv, never in a file.
@@ -30,7 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 AUDIO = ROOT / "public" / "audio"
 # An episode (--episode name) keeps its lines, levels and manifest in audio/<name>/ and shares music + sfx.
 EPISODE = os.environ.get("EPISODE", "")
-SCRIPT_TS = Path(os.environ.get("SCRIPT_TS") or ROOT / "src" / "script.ts")
+SCRIPT_TS = Path(os.environ.get("SCRIPT_TS") or ROOT / "src" / "scripts" / f"{EPISODE}.ts")
 EP_DIR = AUDIO / EPISODE if EPISODE else AUDIO
 EP_REL = f"audio/{EPISODE}/" if EPISODE else "audio/"
 LINES_DIR, SFX_DIR = EP_DIR / "lines", AUDIO / "sfx"
