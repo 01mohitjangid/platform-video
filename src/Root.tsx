@@ -6,11 +6,11 @@ import { buildTimeline, FPS, totalFrames } from "./timeline";
 
 const frames = (id: EpisodeId): number => totalFrames(buildTimeline(EPISODES[id].sequence, EPISODES[id].manifest, FPS));
 
-const VIDEOS: { id: string; episode: EpisodeId }[] = [
-  { id: "LugNut", episode: "lug-nut" },
-  { id: "Interview", episode: "interview" },
-  { id: "Hours", episode: "hours" }, { id: "Contest", episode: "contest" }, { id: "Dfm", episode: "dfm" }, { id: "Ask", episode: "ask" },
-];
+/** Composition id from the episode id: "lug-nut" → "LugNut" (and "LugNutWide"). */
+const VIDEOS = (Object.keys(EPISODES) as EpisodeId[]).map((episode) => ({
+  episode,
+  id: episode.replace(/(?:^|-)(\w)/g, (_, c: string) => c.toUpperCase()),
+}));
 
 /** Every episode twice: a 9:16 reel and a 16:9 wide cut. */
 export const Root: React.FC = () => (
