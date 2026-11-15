@@ -14,28 +14,36 @@ real-looking app screens cut in. Rendered with Remotion. Every episode renders t
 
 ## Folders
 
+Every story has the same shape in three places. Each version is a number: `v1`, `v2` … `vN`.
+
+```
+src/scripts/ask/v1.ts             the script of version 1      ← you write these
+src/scripts/ask/v2.ts             the script of version 2
+public/audio/ask/v1/              its voices: manifest.json + levels.json (tracked), lines/*.wav (generated)
+public/audio/ask/v2/
+out/ask/v1.mp4, v1-wide.mp4       its renders (git-ignored)
+out/ask/v2.mp4, v2-wide.mp4
+```
+
+The rest of the project is shared by every story and version:
+
 ```
 src/
   index.ts           entry point Remotion renders
-  Root.tsx           two compositions per episode (reel + wide), built from episodes.ts
-  episodes.ts        the one list of episodes: script + voice manifest + levels
-  Episode.tsx        plays one episode: 3D scene, inserts, subtitles, audio
+  Root.tsx           two compositions per version: ask-v2 (9:16) and ask-v2-wide (16:9)
+  episodes.ts        finds every src/scripts/<story>/vN.ts that has voices; no list to edit
+  Episode.tsx        plays one version: 3D scene, inserts, subtitles, audio
   timeline.ts        turns a script into frames
   types.ts           script types (lines, inserts, beats, cameras, emotions)
-  scripts/           one story per episode            ← you write these
-                     ask.ts is the draft; ask-v1.ts, ask-v2.ts … are saved versions
   scene/             3D room, student, FixtureAI, camera
-  ui/                2D app screens cut in as inserts
-    scenes/          one screen per insert kind       ← add one for a new feature
+  ui/scenes/         one app screen per insert kind   ← add one for a new feature
   overlay/           subtitles
 public/
-  audio/<episode>/   manifest.json + levels.json (tracked), lines/*.wav (generated); one folder per version too
-  audio/music.wav    shared by every episode (generated)
-  audio/sfx/         shared sound effects (generated)
+  audio/music.wav    music (generated)
+  audio/sfx/         sound effects (generated)
   brand/             logos
-tools/               audio.py (voices), save-version.py, render.sh, QA scripts
+tools/               audio.py (voices), new-version.py, render.sh, QA scripts
 docs/                character concept pages
-out/                 renders (git-ignored)
 ```
 
 ## Make a new video
