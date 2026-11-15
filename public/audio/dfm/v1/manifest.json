@@ -1,67 +1,67 @@
 {
   "lines": {
     "p1": {
-      "file": "audio/dfm/lines/p1.wav",
+      "file": "audio/dfm/v1/lines/p1.wav",
       "duration": 4.322
     },
     "p2": {
-      "file": "audio/dfm/lines/p2.wav",
+      "file": "audio/dfm/v1/lines/p2.wav",
       "duration": 1.866
     },
     "b1": {
-      "file": "audio/dfm/lines/b1.wav",
+      "file": "audio/dfm/v1/lines/b1.wav",
       "duration": 2.94
     },
     "p3": {
-      "file": "audio/dfm/lines/p3.wav",
+      "file": "audio/dfm/v1/lines/p3.wav",
       "duration": 3.326
     },
     "b2": {
-      "file": "audio/dfm/lines/b2.wav",
+      "file": "audio/dfm/v1/lines/b2.wav",
       "duration": 5.362
     },
     "p4": {
-      "file": "audio/dfm/lines/p4.wav",
+      "file": "audio/dfm/v1/lines/p4.wav",
       "duration": 5.114
     },
     "b3": {
-      "file": "audio/dfm/lines/b3.wav",
+      "file": "audio/dfm/v1/lines/b3.wav",
       "duration": 5.03
     },
     "p5": {
-      "file": "audio/dfm/lines/p5.wav",
+      "file": "audio/dfm/v1/lines/p5.wav",
       "duration": 1.742
     },
     "b4": {
-      "file": "audio/dfm/lines/b4.wav",
+      "file": "audio/dfm/v1/lines/b4.wav",
       "duration": 4.864
     },
     "p6": {
-      "file": "audio/dfm/lines/p6.wav",
+      "file": "audio/dfm/v1/lines/p6.wav",
       "duration": 2.167
     },
     "b5": {
-      "file": "audio/dfm/lines/b5.wav",
+      "file": "audio/dfm/v1/lines/b5.wav",
       "duration": 4.286
     },
     "p7": {
-      "file": "audio/dfm/lines/p7.wav",
+      "file": "audio/dfm/v1/lines/p7.wav",
       "duration": 3.654
     },
     "b6": {
-      "file": "audio/dfm/lines/b6.wav",
+      "file": "audio/dfm/v1/lines/b6.wav",
       "duration": 0.639
     },
     "p8": {
-      "file": "audio/dfm/lines/p8.wav",
+      "file": "audio/dfm/v1/lines/p8.wav",
       "duration": 2.567
     },
     "b7": {
-      "file": "audio/dfm/lines/b7.wav",
+      "file": "audio/dfm/v1/lines/b7.wav",
       "duration": 3.32
     },
     "b8": {
-      "file": "audio/dfm/lines/b8.wav",
+      "file": "audio/dfm/v1/lines/b8.wav",
       "duration": 3.034
     }
   },
