@@ -1,4 +1,4 @@
-import type { SequenceItem } from "../types";
+import type { SequenceItem } from "../../types";
 
 /**
  * "The hours that count." — ~65 s, a Sunday night and a Wednesday morning.
