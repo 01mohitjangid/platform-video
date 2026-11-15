@@ -72,6 +72,15 @@ All versions share the 3D scene, the screens, the music and the sound effects. A
 
 Voice `.wav` files and renders are git-ignored, so a saved version's voices exist only on this disk. Back up `public/audio/` and `out/` (for example to Drive). Voicing a line again gives a different take.
 
+## Voices
+
+- Needs `OPENAI_API_KEY` (in the shell or in a git-ignored `.env` here), numpy and ffmpeg. Raw voices are cached in `$TTS_RAW_DIR`.
+- A line's optional `tone` tells the voice how to say it and where to pause. An optional `rate` (for example `1.3`) speeds up one line that must sound rushed.
+- `ask` and `interview` are voiced at natural speed: add `TEMPO=1.0` to the voice command.
+- The silence heard after a line is its `gap` plus 0.26 s of padding in the voice file.
+- All versions share the 3D scene, the screens, the music and the sound effects. A change there shows up in every version the next time it renders. The `.mp4` in `out/` is the exact cut, so keep it.
+- Voice `.wav` files and renders are git-ignored, so they exist only on this disk. Back up `public/audio/` and `out/` (for example to Drive). Voicing a line again gives a different take.
+
 ## Other commands
 
 `npm run studio` opens the Remotion studio. `npx tsc` type-checks. `tools/sheet.sh out/x.mp4` makes contact sheets for a frame-by-frame review.
