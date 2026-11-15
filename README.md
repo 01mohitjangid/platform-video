@@ -56,17 +56,13 @@ docs/                character concept pages
 
 Older versions are never touched, so you can always render and compare them. In Studio, each story is a folder with all its versions.
 
-## Make a new video
+## Make a new story
 
-1. **Script**: copy one in `src/scripts/` to `src/scripts/<episode>.ts` and edit the lines, cameras, emotions and inserts.
+1. **Script**: write `src/scripts/<story>/v1.ts` (copy another story's script to start). Use lowercase letters, numbers and `-` in the name.
    Every script is a story in four acts: a `title` card sets the time and the stakes, the person tries the wrong thing, FixtureAI turns it, the payoff lands (a second `title` card jumps forward in time when the payoff happens later).
-2. **Voices**: `EPISODE=<episode> python tools/audio.py lines`, then `EPISODE=<episode> python tools/audio.py manifest`.
-   Needs `OPENAI_API_KEY` (in the shell or in a git-ignored `.env` here), numpy and ffmpeg. Voices are cached in `$TTS_RAW_DIR`.
-   A line's optional `tone` tells the voice how to say it and where to pause. An optional `rate` (for example `1.3`) speeds up one line that must sound rushed. `ask` and `interview` are voiced at natural speed: add `TEMPO=1.0`.
-   The silence heard after a line is its `gap` plus 0.26 s of padding in the voice file.
-3. **Register**: add the script, `manifest.json` and `levels.json` to `src/episodes.ts`. That is the only list. `Root.tsx` makes the compositions from it (`my-story` → `MyStory` and `MyStoryWide`).
-4. **New screen** (only if the story shows a feature no screen covers yet): add a component in `src/ui/scenes/`, its kind in `src/types.ts`, and an entry in `src/ui/Insert.tsx` and `src/ui/dev-entry.tsx`. The type check fails until all four are there.
-5. **Render**: `npm run render -- lug-nut` writes `out/lug-nut.mp4` (9:16) and `out/lug-nut-wide.mp4` (16:9).
+2. **Voice**: `EPISODE=<story>/v1 python tools/audio.py lines`, then `… manifest`. The story shows up in Studio once it has voices.
+3. **New screen** (only if the story shows a feature no screen covers yet): add a component in `src/ui/scenes/`, its kind in `src/types.ts`, and an entry in `src/ui/Insert.tsx` and `src/ui/dev-entry.tsx`. The type check fails until all four are there.
+4. **Render**: `npm run render -- <story>`.
 
 ## Voices
 
