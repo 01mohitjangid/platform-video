@@ -15,12 +15,13 @@ export interface Episode {
 
 // Every src/scripts/<story>/v<N>.ts with voices in public/audio/<story>/v<N>/ is a video.
 // The bundler (webpack) finds these files when it builds, so a new story or version needs no list here.
+// A version without a manifest.json yet (not voiced) is left out until it is voiced.
 const scripts = require.context("./scripts", true, /^\.\/[a-z0-9-]+\/v\d+\.ts$/);
 const audio = require.context("../public/audio", true, /^\.\/[a-z0-9-]+\/v\d+\/(manifest|levels)\.json$/);
 
 const found = scripts.keys().flatMap((key): Episode[] => {
   const m = key.match(/^\.\/([a-z0-9-]+)\/v(\d+)\.ts$/);
-  if (!m) return [];
+  if (!m || !audio.keys().includes(`./${m[1]}/v${m[2]}/manifest.json`)) return [];
   const dir = `./${m[1]}/v${m[2]}`;
   return [{
     id: `${m[1]}-v${m[2]}`,
