@@ -3,7 +3,7 @@
 Short product videos in a 3D low-poly style: a student at a desk talks with FixtureAI (the white Visor bot), with
 real-looking app screens cut in. Rendered with Remotion. Every episode renders twice: a 9:16 reel and a 16:9 wide cut.
 
-| Episode     | Title                                       | Feeling       |
+| Story       | Title                                       | Feeling       |
 | ----------- | ------------------------------------------- | ------------- |
 | `lug-nut`   | This lug nut is harder than your finals.    | Pride         |
 | `interview` | The interview I bombed.                     | Second chance |
@@ -75,6 +75,6 @@ Older versions are never touched, so you can always render and compare them. In 
 
 ## Other commands
 
-`npm run studio` opens the Remotion studio. `npx tsc` type-checks. `tools/sheet.sh out/x.mp4` makes contact sheets for a frame-by-frame review.
+`npm run studio` opens the Remotion studio. `npx tsc` type-checks. `tools/sheet.sh out/ask/v2.mp4` makes contact sheets for a frame-by-frame review.
 
 The brand voice rules are in `../platform/BRAND.md` (the platform repo).
