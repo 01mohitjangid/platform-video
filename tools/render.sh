@@ -4,6 +4,7 @@
 #        tools/render.sh ask v1     one version (v1 or 1)
 set -e
 STORY="${1:?usage: tools/render.sh <story> [version]}"
+[ -d "src/scripts/$STORY" ] || { echo "no story '$STORY' in src/scripts/"; exit 1; }
 LATEST=$(ls "src/scripts/$STORY" | sed -n 's/^v\([0-9][0-9]*\)\.ts$/\1/p' | sort -n | tail -1)
 V="${2:-$LATEST}"
 V="v${V#v}" # accept v1 or 1
