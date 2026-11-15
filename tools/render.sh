@@ -1,8 +1,9 @@
 #!/bin/sh
-# Renders both cuts of one version: out/<id>.mp4 (9:16 reel) and out/<id>-wide.mp4 (16:9).
-# usage: tools/render.sh ask-v2 | lug-nut-v1
+# Renders both cuts of one version: out/<story>/v<N>.mp4 (9:16 reel) and out/<story>/v<N>-wide.mp4 (16:9).
+# usage: tools/render.sh ask v2
 set -e
-EP="${1:?usage: tools/render.sh <story>-v<N>   (for example ask-v2)}"
-mkdir -p out
-npx remotion render src/index.ts "$EP" "out/$EP.mp4"
-npx remotion render src/index.ts "$EP-wide" "out/$EP-wide.mp4"
+STORY="${1:?usage: tools/render.sh <story> <version>}"
+V="${2:?usage: tools/render.sh <story> <version>}"
+mkdir -p "out/$STORY"
+npx remotion render src/index.ts "$STORY-$V" "out/$STORY/$V.mp4"
+npx remotion render src/index.ts "$STORY-$V-wide" "out/$STORY/$V-wide.mp4"
