@@ -46,6 +46,16 @@ tools/               audio.py (voices), new-version.py, render.sh, QA scripts
 docs/                character concept pages
 ```
 
+## Make a new version of a story
+
+1. **Copy**: `npm run new-version -- ask` copies the latest version (say `v2`) to `v3`, with its voices.
+2. **Edit**: change `src/scripts/ask/v3.ts`.
+3. **Voice**: `EPISODE=ask/v3 python tools/audio.py lines`, then `EPISODE=ask/v3 python tools/audio.py manifest`.
+4. **Render**: `npm run render -- ask` renders the latest version into `out/ask/v3.mp4` and `out/ask/v3-wide.mp4`.
+   `npm run render -- ask v1` renders an older one.
+
+Older versions are never touched, so you can always render and compare them. In Studio, each story is a folder with all its versions.
+
 ## Make a new video
 
 1. **Script**: copy one in `src/scripts/` to `src/scripts/<episode>.ts` and edit the lines, cameras, emotions and inserts.
@@ -57,20 +67,6 @@ docs/                character concept pages
 3. **Register**: add the script, `manifest.json` and `levels.json` to `src/episodes.ts`. That is the only list. `Root.tsx` makes the compositions from it (`my-story` → `MyStory` and `MyStoryWide`).
 4. **New screen** (only if the story shows a feature no screen covers yet): add a component in `src/ui/scenes/`, its kind in `src/types.ts`, and an entry in `src/ui/Insert.tsx` and `src/ui/dev-entry.tsx`. The type check fails until all four are there.
 5. **Render**: `npm run render -- lug-nut` writes `out/lug-nut.mp4` (9:16) and `out/lug-nut-wide.mp4` (16:9).
-
-## Versions
-
-`ask` is the draft you edit. Saved versions sit next to it as `ask-v1`, `ask-v2` and so on, and they never change.
-
-1. **Save**: when you like the draft, run `npm run save-version -- ask`. It copies the script, the voice files and the manifest to the next free number (say `ask-v2`) and adds it to `src/episodes.ts`.
-2. **Render the saved copy**: `npm run render -- ask-v2` writes `out/ask-v2.mp4` and `out/ask-v2-wide.mp4`.
-3. **Keep going**: edit `src/scripts/ask.ts` and voice it again. The saved version keeps its own voices.
-
-In Studio, each story is a folder that holds the draft and all its versions (`Ask`, `AskV1`, `AskV2`, …).
-
-All versions share the 3D scene, the screens, the music and the sound effects. A change there shows up in every version the next time it renders. The `.mp4` in `out/` is the exact cut, so keep it.
-
-Voice `.wav` files and renders are git-ignored, so a saved version's voices exist only on this disk. Back up `public/audio/` and `out/` (for example to Drive). Voicing a line again gives a different take.
 
 ## Voices
 
