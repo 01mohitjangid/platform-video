@@ -1,4 +1,4 @@
-import type { SequenceItem } from "../types";
+import type { SequenceItem } from "../../types";
 
 /**
  * "Nobody at home is an engineer." — ~70 s, a first-year at 1 AM and the end of the semester.
