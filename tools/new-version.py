@@ -1,6 +1,6 @@
 """Start the next version of a story by copying its latest one.
 
-    npm run save-version -- ask    # ask/v2 -> ask/v3: src/scripts/ask/v3.ts and public/audio/ask/v3/
+    npm run new-version -- ask    # ask/v2 -> ask/v3: src/scripts/ask/v3.ts and public/audio/ask/v3/
 
 The copy has the same script and the same voice files, so it renders like the version before it until you
 change it. Edit src/scripts/ask/v3.ts, voice it (EPISODE=ask/v3 python3 tools/audio.py lines, then manifest)
