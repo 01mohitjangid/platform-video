@@ -1,9 +1,9 @@
 import lugNutManifest from "../public/audio/lug-nut/v1/manifest.json";
 import lugNutLevels from "../public/audio/lug-nut/v1/levels.json";
 import { SEQUENCE as lugNut } from "./scripts/lug-nut/v1";
-import interviewManifest from "../public/audio/interview/manifest.json";
-import interviewLevels from "../public/audio/interview/levels.json";
-import { SEQUENCE as interview } from "./scripts/interview";
+import interviewManifest from "../public/audio/interview/v2/manifest.json";
+import interviewLevels from "../public/audio/interview/v2/levels.json";
+import { SEQUENCE as interview } from "./scripts/interview/v2";
 import hoursManifest from "../public/audio/hours/v1/manifest.json";
 import hoursLevels from "../public/audio/hours/v1/levels.json";
 import { SEQUENCE as hours } from "./scripts/hours/v1";
