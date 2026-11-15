@@ -19,9 +19,9 @@ import { SEQUENCE as ask } from "./scripts/ask/v2";
 import askV1Manifest from "../public/audio/ask/v1/manifest.json";
 import askV1Levels from "../public/audio/ask/v1/levels.json";
 import { SEQUENCE as askV1 } from "./scripts/ask/v1";
-import interviewV1Manifest from "../public/audio/interview-v1/manifest.json";
-import interviewV1Levels from "../public/audio/interview-v1/levels.json";
-import { SEQUENCE as interviewV1 } from "./scripts/interview-v1";
+import interviewV1Manifest from "../public/audio/interview/v1/manifest.json";
+import interviewV1Levels from "../public/audio/interview/v1/levels.json";
+import { SEQUENCE as interviewV1 } from "./scripts/interview/v1";
 import type { Levels } from "./timeline";
 import type { AudioManifest, SequenceItem } from "./types";
 
