@@ -1,46 +1,38 @@
-import lugNutManifest from "../public/audio/lug-nut/manifest.json";
-import lugNutLevels from "../public/audio/lug-nut/levels.json";
-import { SEQUENCE as lugNut } from "./scripts/lug-nut";
-import interviewManifest from "../public/audio/interview/manifest.json";
-import interviewLevels from "../public/audio/interview/levels.json";
-import { SEQUENCE as interview } from "./scripts/interview";
-import hoursManifest from "../public/audio/hours/manifest.json";
-import hoursLevels from "../public/audio/hours/levels.json";
-import { SEQUENCE as hours } from "./scripts/hours";
-import contestManifest from "../public/audio/contest/manifest.json";
-import contestLevels from "../public/audio/contest/levels.json";
-import { SEQUENCE as contest } from "./scripts/contest";
-import dfmManifest from "../public/audio/dfm/manifest.json";
-import dfmLevels from "../public/audio/dfm/levels.json";
-import { SEQUENCE as dfm } from "./scripts/dfm";
-import askManifest from "../public/audio/ask/manifest.json";
-import askLevels from "../public/audio/ask/levels.json";
-import { SEQUENCE as ask } from "./scripts/ask";
-import askV1Manifest from "../public/audio/ask-v1/manifest.json";
-import askV1Levels from "../public/audio/ask-v1/levels.json";
-import { SEQUENCE as askV1 } from "./scripts/ask-v1";
-import interviewV1Manifest from "../public/audio/interview-v1/manifest.json";
-import interviewV1Levels from "../public/audio/interview-v1/levels.json";
-import { SEQUENCE as interviewV1 } from "./scripts/interview-v1";
+/// <reference types="webpack/module" />
 import type { Levels } from "./timeline";
 import type { AudioManifest, SequenceItem } from "./types";
 
 export interface Episode {
+  /** "ask-v2": the composition id. Its wide cut is "ask-v2-wide". */
+  id: string;
+  /** "ask": the folder name in src/scripts/, public/audio/ and out/. */
+  story: string;
+  version: number;
   sequence: SequenceItem[];
   manifest: AudioManifest;
   levels: Levels;
 }
 
-/** Every video this project renders: a script plus its generated voices. */
-export const EPISODES = {
-  "lug-nut": { sequence: lugNut, manifest: lugNutManifest as AudioManifest, levels: lugNutLevels as Levels },
-  interview: { sequence: interview, manifest: interviewManifest as AudioManifest, levels: interviewLevels as Levels },
-  hours: { sequence: hours, manifest: hoursManifest as AudioManifest, levels: hoursLevels as Levels },
-  contest: { sequence: contest, manifest: contestManifest as AudioManifest, levels: contestLevels as Levels },
-  dfm: { sequence: dfm, manifest: dfmManifest as AudioManifest, levels: dfmLevels as Levels },
-  ask: { sequence: ask, manifest: askManifest as AudioManifest, levels: askLevels as Levels },
-  "ask-v1": { sequence: askV1, manifest: askV1Manifest as AudioManifest, levels: askV1Levels as Levels },
-  "interview-v1": { sequence: interviewV1, manifest: interviewV1Manifest as AudioManifest, levels: interviewV1Levels as Levels },
-} satisfies Record<string, Episode>;
+// Every src/scripts/<story>/v<N>.ts with voices in public/audio/<story>/v<N>/ is a video.
+// The bundler (webpack) finds these files when it builds, so a new story or version needs no list here.
+// A version without a manifest.json yet (not voiced) is left out until it is voiced.
+const scripts = require.context("./scripts", true, /^\.\/[a-z0-9-]+\/v\d+\.ts$/);
+const audio = require.context("../public/audio", true, /^\.\/[a-z0-9-]+\/v\d+\/(manifest|levels)\.json$/);
 
-export type EpisodeId = keyof typeof EPISODES;
+const found = scripts.keys().flatMap((key): Episode[] => {
+  const m = key.match(/^\.\/([a-z0-9-]+)\/v(\d+)\.ts$/);
+  if (!m || !audio.keys().includes(`./${m[1]}/v${m[2]}/manifest.json`)) return [];
+  const dir = `./${m[1]}/v${m[2]}`;
+  return [{
+    id: `${m[1]}-v${m[2]}`,
+    story: m[1],
+    version: Number(m[2]),
+    sequence: (scripts(key) as { SEQUENCE: SequenceItem[] }).SEQUENCE,
+    manifest: audio(`${dir}/manifest.json`) as AudioManifest,
+    levels: audio(`${dir}/levels.json`) as Levels,
+  }];
+});
+found.sort((a, b) => a.story.localeCompare(b.story) || a.version - b.version); // v2 before v10
+
+/** Every video this project renders, by composition id. */
+export const EPISODES: Record<string, Episode> = Object.fromEntries(found.map((e) => [e.id, e]));

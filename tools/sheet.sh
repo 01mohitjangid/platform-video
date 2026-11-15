@@ -1,6 +1,6 @@
 #!/bin/sh
 # Contact sheets of a rendered video for a frame-by-frame review.
-# usage: tools/sheet.sh out/ask.mp4 [fps=2]
+# usage: tools/sheet.sh out/ask/v2.mp4 [fps=2]
 set -e
 VIDEO="$1"
 FPS="${2:-2}"

@@ -1,10 +1,13 @@
 #!/bin/sh
-# Renders both cuts of one episode or version: out/<episode>.mp4 (9:16 reel) and out/<episode>-wide.mp4 (16:9).
-# usage: tools/render.sh ask | ask-v2 | lug-nut
+# Renders both cuts of one version: out/<story>/v<N>.mp4 (9:16 reel) and out/<story>/v<N>-wide.mp4 (16:9).
+# usage: tools/render.sh ask        the latest version of ask
+#        tools/render.sh ask v1     one version (v1 or 1)
 set -e
-EP="${1:?usage: tools/render.sh <episode>   (for example ask or ask-v2)}"
-# Same id rule as src/Root.tsx: ask-v2 -> AskV2
-COMP=$(printf %s "$EP" | awk -F- '{ for (i = 1; i <= NF; i++) printf "%s%s", toupper(substr($i, 1, 1)), substr($i, 2) }')
-mkdir -p out
-npx remotion render src/index.ts "$COMP" "out/$EP.mp4"
-npx remotion render src/index.ts "${COMP}Wide" "out/$EP-wide.mp4"
+STORY="${1:?usage: tools/render.sh <story> [version]}"
+[ -d "src/scripts/$STORY" ] || { echo "no story '$STORY' in src/scripts/"; exit 1; }
+LATEST=$(ls "src/scripts/$STORY" | sed -n 's/^v\([0-9][0-9]*\)\.ts$/\1/p' | sort -n | tail -1)
+V="${2:-$LATEST}"
+V="v${V#v}" # accept v1 or 1
+mkdir -p "out/$STORY"
+npx remotion render src/index.ts "$STORY-$V" "out/$STORY/$V.mp4"
+npx remotion render src/index.ts "$STORY-$V-wide" "out/$STORY/$V-wide.mp4"

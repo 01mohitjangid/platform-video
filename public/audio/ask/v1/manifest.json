@@ -1,67 +1,67 @@
 {
   "lines": {
     "p1": {
-      "file": "audio/ask-v1/lines/p1.wav",
+      "file": "audio/ask/v1/lines/p1.wav",
       "duration": 3.882
     },
     "p2": {
-      "file": "audio/ask-v1/lines/p2.wav",
+      "file": "audio/ask/v1/lines/p2.wav",
       "duration": 4.588
     },
     "b1": {
-      "file": "audio/ask-v1/lines/b1.wav",
+      "file": "audio/ask/v1/lines/b1.wav",
       "duration": 2.183
     },
     "p3": {
-      "file": "audio/ask-v1/lines/p3.wav",
+      "file": "audio/ask/v1/lines/p3.wav",
       "duration": 3.083
     },
     "b2": {
-      "file": "audio/ask-v1/lines/b2.wav",
+      "file": "audio/ask/v1/lines/b2.wav",
       "duration": 4.392
     },
     "p4": {
-      "file": "audio/ask-v1/lines/p4.wav",
+      "file": "audio/ask/v1/lines/p4.wav",
       "duration": 4.597
     },
     "b3": {
-      "file": "audio/ask-v1/lines/b3.wav",
+      "file": "audio/ask/v1/lines/b3.wav",
       "duration": 7.204
     },
     "p5": {
-      "file": "audio/ask-v1/lines/p5.wav",
+      "file": "audio/ask/v1/lines/p5.wav",
       "duration": 1.541
     },
     "b4": {
-      "file": "audio/ask-v1/lines/b4.wav",
+      "file": "audio/ask/v1/lines/b4.wav",
       "duration": 3.228
     },
     "p6": {
-      "file": "audio/ask-v1/lines/p6.wav",
+      "file": "audio/ask/v1/lines/p6.wav",
       "duration": 2.17
     },
     "b5": {
-      "file": "audio/ask-v1/lines/b5.wav",
+      "file": "audio/ask/v1/lines/b5.wav",
       "duration": 3.067
     },
     "p7": {
-      "file": "audio/ask-v1/lines/p7.wav",
+      "file": "audio/ask/v1/lines/p7.wav",
       "duration": 3.532
     },
     "b6": {
-      "file": "audio/ask-v1/lines/b6.wav",
+      "file": "audio/ask/v1/lines/b6.wav",
       "duration": 1.248
     },
     "p8": {
-      "file": "audio/ask-v1/lines/p8.wav",
+      "file": "audio/ask/v1/lines/p8.wav",
       "duration": 0.983
     },
     "b7": {
-      "file": "audio/ask-v1/lines/b7.wav",
+      "file": "audio/ask/v1/lines/b7.wav",
       "duration": 4.797
     },
     "b8": {
-      "file": "audio/ask-v1/lines/b8.wav",
+      "file": "audio/ask/v1/lines/b8.wav",
       "duration": 3.034
     }
   },

@@ -1,10 +1,10 @@
 """Audio pipeline for the FixtureLabs videos.
 
-    EPISODE=ask python tools/audio.py lines [--force]  # TTS every line in src/scripts/ask.ts, write levels.json
-    EPISODE=ask python tools/audio.py manifest         # verify + write public/audio/ask/manifest.json
-    EPISODE=ask python tools/audio.py all              # lines -> music -> sfx -> manifest (verifies everything)
-    python tools/audio.py music                        # compose public/audio/music.wav (shared)
-    python tools/audio.py sfx                          # synthesise public/audio/sfx/<kind>.wav (shared)
+    EPISODE=ask/v3 python tools/audio.py lines [--force]  # TTS every line in src/scripts/ask/v3.ts, write levels.json
+    EPISODE=ask/v3 python tools/audio.py manifest         # verify + write public/audio/ask/v3/manifest.json
+    EPISODE=ask/v3 python tools/audio.py all              # lines -> music -> sfx -> manifest (verifies everything)
+    python tools/audio.py music                           # compose public/audio/music.wav (shared)
+    python tools/audio.py sfx                             # synthesise public/audio/sfx/<kind>.wav (shared)
     SCRIPT_TS=path/to/other.ts overrides the script path (default: src/scripts/$EPISODE.ts).
 
 Needs numpy, curl and ffmpeg ($FFMPEG, else imageio_ffmpeg, else PATH). The OpenAI key comes from

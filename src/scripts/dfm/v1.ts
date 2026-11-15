@@ -1,4 +1,4 @@
-import type { SequenceItem } from "../types";
+import type { SequenceItem } from "../../types";
 
 /**
  * "The bracket that cost four times more." — ~70 s, the night before a design review.

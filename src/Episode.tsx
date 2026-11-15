@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { EPISODES, type EpisodeId } from "./episodes";
+import { EPISODES } from "./episodes";
 import type { Aspect } from "./types";
 import { isInsert, isLine } from "./types";
 import { buildTimeline, musicEnvelope, resolveFrame } from "./timeline";
@@ -9,7 +9,7 @@ import { Insert } from "./ui/Insert";
 import { Subtitle } from "./overlay/Subtitle";
 
 // Remotion wants composition props to be an open record.
-export type EpisodeProps = { aspect: Aspect; episode: EpisodeId; [key: string]: unknown };
+export type EpisodeProps = { aspect: Aspect; /** "ask-v2" */ episode: string; [key: string]: unknown };
 
 export const Episode: React.FC<EpisodeProps> = ({ aspect, episode }) => {
   const frame = useCurrentFrame();
