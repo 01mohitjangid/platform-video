@@ -1,4 +1,4 @@
-import type { SequenceItem } from "../types";
+import type { SequenceItem } from "../../types";
 
 /**
  * "This lug nut is harder than your finals." — ~65 s, one night, one deadline.

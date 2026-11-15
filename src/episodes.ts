@@ -1,6 +1,6 @@
-import lugNutManifest from "../public/audio/lug-nut/manifest.json";
-import lugNutLevels from "../public/audio/lug-nut/levels.json";
-import { SEQUENCE as lugNut } from "./scripts/lug-nut";
+import lugNutManifest from "../public/audio/lug-nut/v1/manifest.json";
+import lugNutLevels from "../public/audio/lug-nut/v1/levels.json";
+import { SEQUENCE as lugNut } from "./scripts/lug-nut/v1";
 import interviewManifest from "../public/audio/interview/manifest.json";
 import interviewLevels from "../public/audio/interview/levels.json";
 import { SEQUENCE as interview } from "./scripts/interview";

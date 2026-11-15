@@ -1,75 +1,75 @@
 {
   "lines": {
     "p1": {
-      "file": "audio/lug-nut/lines/p1.wav",
+      "file": "audio/lug-nut/v1/lines/p1.wav",
       "duration": 4.15
     },
     "p2": {
-      "file": "audio/lug-nut/lines/p2.wav",
+      "file": "audio/lug-nut/v1/lines/p2.wav",
       "duration": 1.967
     },
     "b1": {
-      "file": "audio/lug-nut/lines/b1.wav",
+      "file": "audio/lug-nut/v1/lines/b1.wav",
       "duration": 5.301
     },
     "p3": {
-      "file": "audio/lug-nut/lines/p3.wav",
+      "file": "audio/lug-nut/v1/lines/p3.wav",
       "duration": 4.733
     },
     "p4": {
-      "file": "audio/lug-nut/lines/p4.wav",
+      "file": "audio/lug-nut/v1/lines/p4.wav",
       "duration": 3.115
     },
     "b2": {
-      "file": "audio/lug-nut/lines/b2.wav",
+      "file": "audio/lug-nut/v1/lines/b2.wav",
       "duration": 3.999
     },
     "b3": {
-      "file": "audio/lug-nut/lines/b3.wav",
+      "file": "audio/lug-nut/v1/lines/b3.wav",
       "duration": 2.897
     },
     "p5": {
-      "file": "audio/lug-nut/lines/p5.wav",
+      "file": "audio/lug-nut/v1/lines/p5.wav",
       "duration": 3.74
     },
     "p6": {
-      "file": "audio/lug-nut/lines/p6.wav",
+      "file": "audio/lug-nut/v1/lines/p6.wav",
       "duration": 2.413
     },
     "b4": {
-      "file": "audio/lug-nut/lines/b4.wav",
+      "file": "audio/lug-nut/v1/lines/b4.wav",
       "duration": 6.969
     },
     "p7": {
-      "file": "audio/lug-nut/lines/p7.wav",
+      "file": "audio/lug-nut/v1/lines/p7.wav",
       "duration": 1.113
     },
     "b5": {
-      "file": "audio/lug-nut/lines/b5.wav",
+      "file": "audio/lug-nut/v1/lines/b5.wav",
       "duration": 0.634
     },
     "p8": {
-      "file": "audio/lug-nut/lines/p8.wav",
+      "file": "audio/lug-nut/v1/lines/p8.wav",
       "duration": 1.052
     },
     "p9": {
-      "file": "audio/lug-nut/lines/p9.wav",
+      "file": "audio/lug-nut/v1/lines/p9.wav",
       "duration": 4.258
     },
     "b6": {
-      "file": "audio/lug-nut/lines/b6.wav",
+      "file": "audio/lug-nut/v1/lines/b6.wav",
       "duration": 3.917
     },
     "p10": {
-      "file": "audio/lug-nut/lines/p10.wav",
+      "file": "audio/lug-nut/v1/lines/p10.wav",
       "duration": 2.014
     },
     "b7": {
-      "file": "audio/lug-nut/lines/b7.wav",
+      "file": "audio/lug-nut/v1/lines/b7.wav",
       "duration": 1.485
     },
     "b8": {
-      "file": "audio/lug-nut/lines/b8.wav",
+      "file": "audio/lug-nut/v1/lines/b8.wav",
       "duration": 3.034
     }
   },
