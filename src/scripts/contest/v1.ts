@@ -1,4 +1,4 @@
-import type { SequenceItem } from "../types";
+import type { SequenceItem } from "../../types";
 
 /**
  * "The contest I almost skipped." — ~70 s, one Sunday evening.
